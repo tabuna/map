@@ -1,6 +1,6 @@
 # Laravel Mapper
 
-A simple and powerful object mapper for Laravel. 
+A simple and elegant object mapper for Laravel. 
 Easily map arrays, requests, or collections to DTOs, Eloquent models, or custom objects.
 
 ## Usage
