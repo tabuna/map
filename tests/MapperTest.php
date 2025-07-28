@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tabuna\UI\Tests;
+namespace Tabuna\Map\Tests;
 
-use Tabuna\UI\Mapper;
-use Tabuna\UI\Tests\Dummy\CustomMapperStub;
-use Tabuna\UI\Tests\Dummy\DummyAirport;
-use Tabuna\UI\Tests\Dummy\EloquentAirportStub;
+use Tabuna\Map\Mapper;
+use Tabuna\Map\Tests\Dummy\CustomMapperStub;
+use Tabuna\Map\Tests\Dummy\DummyAirport;
+use Tabuna\Map\Tests\Dummy\EloquentAirportStub;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Orchestra\Testbench\TestCase;
@@ -105,5 +105,68 @@ class MapperTest extends TestCase
         $this->assertInstanceOf(DummyAirport::class, $airport);
         $this->assertSame('LAX', $airport->code);
         $this->assertSame('Los Angeles', $airport->city);
+    }
+
+    public function testItConvertsMappedObjectToArray(): void
+    {
+        $data = ['code' => 'SVO', 'city' => 'Moscow'];
+
+        $array = Mapper::map($data)->toArray();
+
+        $this->assertIsArray($array);
+        $this->assertSame(['code' => 'SVO', 'city' => 'Moscow'], $array);
+    }
+
+    public function testItConvertsMappedCollectionToArray(): void
+    {
+        $data = [
+            ['code' => 'SVO', 'city' => 'Moscow'],
+            ['code' => 'JFK', 'city' => 'New York'],
+        ];
+
+        $array = Mapper::map($data)->collection()->toArray();
+
+        $this->assertIsArray($array);
+        $this->assertCount(2, $array);
+        $this->assertSame('New York', $array[1]['city']);
+    }
+
+    public function testItConvertsMappedObjectToJson(): void
+    {
+        $data = ['code' => 'SVO', 'city' => 'Moscow'];
+
+        $json = Mapper::map($data)->toJson();
+
+        $this->assertJson($json);
+        $this->assertJsonStringEqualsJsonString('{"code":"SVO","city":"Moscow"}', $json);
+    }
+
+    public function testItConvertsMappedCollectionToJson(): void
+    {
+        $data = [
+            ['code' => 'SVO', 'city' => 'Moscow'],
+            ['code' => 'JFK', 'city' => 'New York'],
+        ];
+
+        $json = Mapper::map($data)->collection()->toJson();
+
+        $this->assertJson($json);
+        $expected = json_encode($data, JSON_THROW_ON_ERROR);
+        $this->assertJsonStringEqualsJsonString($expected, $json);
+    }
+
+    public function testCollectionModeReturnsLaravelCollection(): void
+    {
+        $data = [
+            ['code' => 'SVO', 'city' => 'Moscow'],
+            ['code' => 'JFK', 'city' => 'New York'],
+        ];
+
+        $result = Mapper::map($data)
+            ->collection()
+            ->to(DummyAirport::class);
+
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertContainsOnlyInstancesOf(DummyAirport::class, $result);
     }
 }
