@@ -4,7 +4,6 @@ namespace Tabuna\Map;
 
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -130,7 +129,7 @@ class Mapper
 
         $target = $this->container->make($targetClass);
 
-        return $this->fillTarget($target, $item);
+        return $this->fill($target, $item);
     }
 
     /**
@@ -140,7 +139,7 @@ class Mapper
      * @param mixed $item
      * @return object
      */
-    protected function fillTarget(object $target, mixed $item): object
+    protected function fill(object $target, mixed $item): object
     {
         $attributes = is_array($item)
             ? $item
