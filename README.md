@@ -44,6 +44,17 @@ $airports = map($data)
 
 This returns an `Illuminate\Support\Collection` of objects.
 
+### JSON Input
+
+The `map()` function also accepts a JSON string as input. 
+It will automatically be decoded into an array before mapping:
+
+```php
+$json = '{"code": "LPK", "city": "Lipetsk"}';
+
+$airport = map($json)->to(Airport::class);
+```
+
 ### Customizing Mapping
 
 By default, the Mapper will create objects even if some properties are missing. 
