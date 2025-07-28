@@ -55,6 +55,7 @@ $json = '{"code": "LPK", "city": "Lipetsk"}';
 $airport = map($json)->to(Airport::class);
 ```
 
+<!--
 ### Customizing Mapping
 
 By default, the Mapper will create objects even if some properties are missing. 
@@ -76,6 +77,7 @@ $airport = map($data)
     ->with(CustomAirportMapper::class)
     ->to(Airport::class);
 ```
+-->
 
 
 ### Serializing to Array or JSON

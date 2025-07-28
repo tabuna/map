@@ -74,6 +74,7 @@ class MapperTest extends TestCase
         $this->assertSame('Lipetsk', $mapped->city);
     }
 
+    /*
     public function testItUsesCustomMapperClass(): void
     {
         $data = ['code' => 'LPK', 'city' => 'Lipetsk'];
@@ -85,13 +86,16 @@ class MapperTest extends TestCase
         $this->assertSame('custom-mapped', $mapped->code);
         $this->assertSame('custom-mapped', $mapped->city);
     }
-
+*/
+    /*
     public function testItUsesCustomMapperClosure(): void
     {
         $data = ['code' => 'LPK', 'city' => 'Lipetsk'];
 
         $mapped = Mapper::map($data)
             ->with(function ($mapper, $item) {
+
+                dd($mapper, $item);
                 $obj = new DummyAirport();
                 $obj->code = 'closure-mapped';
                 $obj->city = 'closure-mapped';
@@ -103,6 +107,7 @@ class MapperTest extends TestCase
         $this->assertSame('closure-mapped', $mapped->code);
         $this->assertSame('closure-mapped', $mapped->city);
     }
+*/
 
     public function testHelperFunctionMapsRequestToObject(): void
     {

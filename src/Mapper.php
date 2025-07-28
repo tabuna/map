@@ -20,15 +20,6 @@ class Mapper
     protected bool $isCollection = false;
 
     /**
-     * A list of mappers to apply. Each item must be either:
-     * - a string (class name with a `map` method), or
-     * - a callable that receives ($this, $item).
-     *
-     * @var array<int, string|callable>
-     */
-    protected array $mappers = [];
-
-    /**
      * The IoC container used to resolve mappers and target classes.
      */
     protected Container $container;
@@ -73,20 +64,6 @@ class Mapper
     }
 
     /**
-     * Set the mappers to be applied (class names or callables).
-     *
-     * @param array|callable|string ...$mappers
-     *
-     * @return $this
-     */
-    public function with(...$mappers): self
-    {
-        $this->mappers = $mappers;
-
-        return $this;
-    }
-
-    /**
      * Perform mapping to target class or object.
      *
      * @param class-string $targetClass
@@ -113,6 +90,7 @@ class Mapper
      */
     protected function mapItem(mixed $item, string $targetClass): mixed
     {
+        /*
         foreach ($this->mappers as $mapper) {
             if (is_string($mapper)) {
                 $mapper = $this->container->make($mapper);
@@ -124,6 +102,7 @@ class Mapper
 
             throw new LogicException('Each mapper must be a class name or a callable.');
         }
+        */
 
         $target = $this->container->make($targetClass);
 
