@@ -4,6 +4,12 @@ A simple and elegant object mapper for Laravel.
 It makes mapping arrays, requests, and collections into Eloquent models or any classes easy and convenient.
 
 
+To install, you need to run the following command in your Laravel project:
+
+```shell
+composer require ...
+```
+
 ### Mapping Data
 
 The core function is `map()`, which accepts source data and returns a mapper instance for further transformation.
