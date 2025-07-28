@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tabuna\Map\Tests;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Orchestra\Testbench\TestCase;
 use Tabuna\Map\Mapper;
 use Tabuna\Map\Tests\Dummy\CustomMapperStub;
 use Tabuna\Map\Tests\Dummy\DummyAirport;
 use Tabuna\Map\Tests\Dummy\EloquentAirportStub;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Orchestra\Testbench\TestCase;
 
 class MapperTest extends TestCase
 {

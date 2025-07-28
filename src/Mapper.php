@@ -3,9 +3,9 @@
 namespace Tabuna\Map;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Contracts\Support\Arrayable;
 
 class Mapper
 {
@@ -34,7 +34,7 @@ class Mapper
     protected Container $container;
 
     /**
-     * @param mixed $source The data source to map from.
+     * @param mixed          $source    The data source to map from.
      * @param Container|null $container Optional dependency container.
      */
     public function __construct(mixed $source, ?Container $container = null)
@@ -52,6 +52,7 @@ class Mapper
      * Create a new Mapper instance.
      *
      * @param mixed $source
+     *
      * @return static
      */
     public static function map(mixed $source): self
@@ -75,6 +76,7 @@ class Mapper
      * Set the mappers to be applied (class names or callables).
      *
      * @param array|callable|string ...$mappers
+     *
      * @return $this
      */
     public function with(...$mappers): self
@@ -88,13 +90,14 @@ class Mapper
      * Perform mapping to target class or object.
      *
      * @param class-string $targetClass
+     *
      * @return mixed|Collection
      */
     public function to(string $targetClass)
     {
         if ($this->isCollection) {
             return collect($this->source)
-                ->map(fn($item) => $this->mapItem($item, $targetClass));
+                ->map(fn ($item) => $this->mapItem($item, $targetClass));
         }
 
         return $this->mapItem($this->source, $targetClass);
@@ -103,8 +106,9 @@ class Mapper
     /**
      * Map a single item to the target class.
      *
-     * @param mixed $item
+     * @param mixed        $item
      * @param class-string $targetClass
+     *
      * @return mixed
      */
     protected function mapItem(mixed $item, string $targetClass): mixed
@@ -130,7 +134,8 @@ class Mapper
      * Fill the target object with data from the item.
      *
      * @param object $target
-     * @param mixed $item
+     * @param mixed  $item
+     *
      * @return object
      */
     protected function fill(object $target, mixed $item): object
@@ -161,7 +166,7 @@ class Mapper
     {
         if ($this->isCollection) {
             return collect($this->source)
-                ->map(fn($item) => is_array($item) ? $item : (array) $item)
+                ->map(fn ($item) => is_array($item) ? $item : (array) $item)
                 ->toArray();
         }
 
