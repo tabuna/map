@@ -41,11 +41,11 @@ class Mapper
     {
         $this->container = $container ?? Container::getInstance();
 
-        if ($source instanceof Arrayable) {
-            $this->source = $source->all();
-        } else {
-            $this->source = $source;
-        }
+        $this->source = match (true) {
+            $source instanceof Arrayable => $source->all(),
+            is_string($source)           => json_decode($source, true, 512, JSON_THROW_ON_ERROR),
+            default                      => $source,
+        };
     }
 
     /**

@@ -10,62 +10,73 @@ use Orchestra\Testbench\TestCase;
 use Tabuna\Map\Mapper;
 use Tabuna\Map\Tests\Dummy\CustomMapperStub;
 use Tabuna\Map\Tests\Dummy\DummyAirport;
+use Tabuna\Map\Tests\Dummy\DummyWithContainer;
 use Tabuna\Map\Tests\Dummy\EloquentAirportStub;
 
 class MapperTest extends TestCase
 {
     public function testItMapsArrayToObjectProperties(): void
     {
-        $data = ['code' => 'SVO', 'city' => 'Moscow'];
+        $data = ['code' => 'LPK', 'city' => 'Lipetsk'];
 
         $mapped = Mapper::map($data)->to(DummyAirport::class);
 
         $this->assertInstanceOf(DummyAirport::class, $mapped);
-        $this->assertSame('SVO', $mapped->code);
-        $this->assertSame('Moscow', $mapped->city);
+        $this->assertSame('LPK', $mapped->code);
+        $this->assertSame('Lipetsk', $mapped->city);
+    }
+
+    public function testItMapsArrayToObjectWithOutPartProperties(): void
+    {
+        $data = ['code' => 'LPK'];
+
+        $mapped = Mapper::map($data)->to(DummyAirport::class);
+
+        $this->assertInstanceOf(DummyAirport::class, $mapped);
+        $this->assertSame('LPK', $mapped->code);
     }
 
     public function testItMapsCollectionOfArrays(): void
     {
         $data = [
+            ['code' => 'LPK', 'city' => 'Lipetsk'],
             ['code' => 'SVO', 'city' => 'Moscow'],
-            ['code' => 'JFK', 'city' => 'New York'],
         ];
 
         $mapped = Mapper::map($data)->collection()->to(DummyAirport::class);
 
         $this->assertInstanceOf(Collection::class, $mapped);
         $this->assertCount(2, $mapped);
-        $this->assertSame('JFK', $mapped[1]->code);
+        $this->assertSame('SVO', $mapped[1]->code);
     }
 
     public function testItMapsRequestToModel(): void
     {
         $request = Request::create('/fake', 'POST', [
-            'code' => 'SVO',
-            'city' => 'Moscow',
+            'code' => 'LPK',
+            'city' => 'Lipetsk',
         ]);
 
         $mapped = Mapper::map($request)->to(DummyAirport::class);
 
         $this->assertInstanceOf(DummyAirport::class, $mapped);
-        $this->assertSame('Moscow', $mapped->city);
+        $this->assertSame('Lipetsk', $mapped->city);
     }
 
     public function testItFillsEloquentModelAttributes(): void
     {
-        $data = ['code' => 'SVO', 'city' => 'Moscow'];
+        $data = ['code' => 'LPK', 'city' => 'Lipetsk'];
 
         $mapped = Mapper::map($data)->to(EloquentAirportStub::class);
 
         $this->assertInstanceOf(EloquentAirportStub::class, $mapped);
-        $this->assertSame('SVO', $mapped->code);
-        $this->assertSame('Moscow', $mapped->city);
+        $this->assertSame('LPK', $mapped->code);
+        $this->assertSame('Lipetsk', $mapped->city);
     }
 
     public function testItUsesCustomMapperClass(): void
     {
-        $data = ['code' => 'SVO', 'city' => 'Moscow'];
+        $data = ['code' => 'LPK', 'city' => 'Lipetsk'];
 
         $mapped = Mapper::map($data)
             ->with(CustomMapperStub::class)
@@ -77,7 +88,7 @@ class MapperTest extends TestCase
 
     public function testItUsesCustomMapperClosure(): void
     {
-        $data = ['code' => 'SVO', 'city' => 'Moscow'];
+        $data = ['code' => 'LPK', 'city' => 'Lipetsk'];
 
         $mapped = Mapper::map($data)
             ->with(function ($mapper, $item) {
@@ -96,56 +107,56 @@ class MapperTest extends TestCase
     public function testHelperFunctionMapsRequestToObject(): void
     {
         $request = Request::create('/fake', 'POST', [
-            'code' => 'LAX',
-            'city' => 'Los Angeles',
+            'code' => 'LED',
+            'city' => 'Saint Petersburg',
         ]);
 
         $airport = map($request)->to(DummyAirport::class);
 
         $this->assertInstanceOf(DummyAirport::class, $airport);
-        $this->assertSame('LAX', $airport->code);
-        $this->assertSame('Los Angeles', $airport->city);
+        $this->assertSame('LED', $airport->code);
+        $this->assertSame('Saint Petersburg', $airport->city);
     }
 
     public function testItConvertsMappedObjectToArray(): void
     {
-        $data = ['code' => 'SVO', 'city' => 'Moscow'];
+        $data = ['code' => 'LPK', 'city' => 'Lipetsk'];
 
         $array = Mapper::map($data)->toArray();
 
         $this->assertIsArray($array);
-        $this->assertSame(['code' => 'SVO', 'city' => 'Moscow'], $array);
+        $this->assertSame(['code' => 'LPK', 'city' => 'Lipetsk'], $array);
     }
 
     public function testItConvertsMappedCollectionToArray(): void
     {
         $data = [
+            ['code' => 'LPK', 'city' => 'Lipetsk'],
             ['code' => 'SVO', 'city' => 'Moscow'],
-            ['code' => 'JFK', 'city' => 'New York'],
         ];
 
         $array = Mapper::map($data)->collection()->toArray();
 
         $this->assertIsArray($array);
         $this->assertCount(2, $array);
-        $this->assertSame('New York', $array[1]['city']);
+        $this->assertSame('Moscow', $array[1]['city']);
     }
 
     public function testItConvertsMappedObjectToJson(): void
     {
-        $data = ['code' => 'SVO', 'city' => 'Moscow'];
+        $data = ['code' => 'LPK', 'city' => 'Lipetsk'];
 
         $json = Mapper::map($data)->toJson();
 
         $this->assertJson($json);
-        $this->assertJsonStringEqualsJsonString('{"code":"SVO","city":"Moscow"}', $json);
+        $this->assertJsonStringEqualsJsonString('{"code":"LPK","city":"Lipetsk"}', $json);
     }
 
     public function testItConvertsMappedCollectionToJson(): void
     {
         $data = [
+            ['code' => 'LPK', 'city' => 'Lipetsk'],
             ['code' => 'SVO', 'city' => 'Moscow'],
-            ['code' => 'JFK', 'city' => 'New York'],
         ];
 
         $json = Mapper::map($data)->collection()->toJson();
@@ -158,8 +169,8 @@ class MapperTest extends TestCase
     public function testCollectionModeReturnsLaravelCollection(): void
     {
         $data = [
+            ['code' => 'LPK', 'city' => 'Lipetsk'],
             ['code' => 'SVO', 'city' => 'Moscow'],
-            ['code' => 'JFK', 'city' => 'New York'],
         ];
 
         $result = Mapper::map($data)
@@ -173,8 +184,8 @@ class MapperTest extends TestCase
     public function testItDoesNotWrapExistingCollectionIntoAnotherCollection(): void
     {
         $originalCollection = collect([
+            ['code' => 'LPK', 'city' => 'Lipetsk'],
             ['code' => 'SVO', 'city' => 'Moscow'],
-            ['code' => 'JFK', 'city' => 'New York'],
         ]);
 
         $mapped = Mapper::map($originalCollection)
@@ -183,5 +194,60 @@ class MapperTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $mapped);
         $this->assertInstanceOf(DummyAirport::class, $mapped->first());
+    }
+
+
+    public function testItMapsWithContainerProperties(): void
+    {
+        $data = ['code' => 'LPK', 'city' => 'Lipetsk'];
+
+        $mapped = Mapper::map($data)->to(DummyWithContainer::class);
+
+        $this->assertInstanceOf(DummyWithContainer::class, $mapped);
+        $this->assertSame('LPK', $mapped->code);
+        $this->assertSame('Lipetsk', $mapped->city);
+        $this->assertNotNull($mapped->version);
+    }
+
+    public function testItMapsOverriteConstructorProperties(): void
+    {
+        $data = ['code' => 'LPK', 'city' => 'Lipetsk', 'version' => 2];
+
+        $mapped = Mapper::map($data)->to(DummyWithContainer::class);
+
+        $this->assertInstanceOf(DummyWithContainer::class, $mapped);
+        $this->assertSame('LPK', $mapped->code);
+        $this->assertSame('Lipetsk', $mapped->city);
+        $this->assertSame(2, $mapped->version);
+    }
+
+    public function testItIgnoresExtraFields(): void
+    {
+        $data = ['code' => 'LPK', 'city' => 'Lipetsk', 'extra' => 'ignored'];
+
+        $mapped = Mapper::map($data)->to(DummyAirport::class);
+
+        $this->assertInstanceOf(DummyAirport::class, $mapped);
+        $this->assertFalse(property_exists($mapped, 'extra'));
+    }
+
+    public function testItParsesValidJsonString(): void
+    {
+        $json = '{"code": "LPK", "city": "Lipetsk"}';
+
+        $mapped = Mapper::map($json)->toArray();
+
+        $this->assertIsArray($mapped);
+        $this->assertSame('LPK', $mapped['code']);
+        $this->assertSame('Lipetsk', $mapped['city']);
+    }
+
+    public function testItThrowsOnInvalidJson(): void
+    {
+        $this->expectException(\JsonException::class);
+
+        $invalidJson = '{"code": "LPK", "city": "Lipetsk"';
+
+        Mapper::map($invalidJson)->toArray();
     }
 }
