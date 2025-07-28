@@ -169,4 +169,19 @@ class MapperTest extends TestCase
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertContainsOnlyInstancesOf(DummyAirport::class, $result);
     }
+
+    public function testItDoesNotWrapExistingCollectionIntoAnotherCollection(): void
+    {
+        $originalCollection = collect([
+            ['code' => 'SVO', 'city' => 'Moscow'],
+            ['code' => 'JFK', 'city' => 'New York'],
+        ]);
+
+        $mapped = Mapper::map($originalCollection)
+            ->collection()
+            ->to(DummyAirport::class);
+
+        $this->assertInstanceOf(Collection::class, $mapped);
+        $this->assertInstanceOf(DummyAirport::class, $mapped->first());
+    }
 }
