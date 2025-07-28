@@ -41,19 +41,20 @@ $airports = map($data)
 
 ```php
 $airport = map($data)
-    ->with(CustomAirportMapper::class)
-    ->to(Airport::class);
-```
-
-Or via closure:
-
-```php
-$airport = map($data)
     ->with(fn ($mapper, $data) => new Airport([
         'code' => strtoupper($data['code'])
     ]))
     ->to(Airport::class);
 ```
+
+Or via invoke class:
+
+```php
+$airport = map($data)
+    ->with(CustomAirportMapper::class)
+    ->to(Airport::class);
+```
+
 
 ### Serialize
 

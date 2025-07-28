@@ -111,13 +111,7 @@ class Mapper
     {
         foreach ($this->mappers as $mapper) {
             if (is_string($mapper)) {
-                $mapperInstance = $this->container->make($mapper);
-
-                if (!method_exists($mapperInstance, 'map')) {
-                    throw new LogicException("Mapper class {$mapper} must have a 'map' method.");
-                }
-
-                return $mapperInstance->map($item, $targetClass);
+                $mapper = $this->container->make($mapper);
             }
 
             if (is_callable($mapper)) {

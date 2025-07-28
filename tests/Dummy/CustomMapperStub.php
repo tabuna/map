@@ -4,9 +4,9 @@ namespace Tabuna\Map\Tests\Dummy;
 
 class CustomMapperStub
 {
-    public function map($item, $targetClass)
+    public function __invoke(mixed $item, $target)
     {
-        $obj = new $targetClass();
+        $obj = new DummyAirport();
         $obj->code = 'custom-mapped';
         $obj->city = 'custom-mapped';
 
