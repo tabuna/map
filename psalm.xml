@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<psalm
+        phpVersion="8.0"
+        errorLevel="5"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="src"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+    <issueHandlers>
+        <UnusedClass errorLevel="suppress" />
+        <UndefinedMagicMethod errorLevel="suppress" />
+        <MissingTemplateParam errorLevel="suppress" />
+        <InvalidTemplateParam errorLevel="suppress" />
+        <MissingOverrideAttribute errorLevel="suppress" />
+        <UndefinedThisPropertyFetch errorLevel="suppress" />
+    </issueHandlers>
+</psalm>

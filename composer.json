@@ -1,0 +1,52 @@
+{
+    "name": "tabuna/map",
+    "description": "A simple object mapper for Laravel with request and array support.",
+    "keywords": [
+        "mapper",
+        "laravel",
+        "data-mapping",
+        "dto",
+        "request-mapping"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexandr Chernyaev",
+            "email": "bliz48rus@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "laravel/framework": "^9.0|^10.0|^11.0|^12.0"
+    },
+    "conflict": {
+        "orchestra/testbench-core": "<6.24.1"
+    },
+    "require-dev": {
+        "vimeo/psalm": "^5.0|^6.7",
+        "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+        "laravel/pint": "^1.21"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tabuna\\Map\\": "src"
+        },
+        "files": [
+            "src/Support/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tabuna\\Map\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "psalm": "vendor/bin/psalm",
+        "test": "./vendor/bin/testbench package:test --parallel --no-coverage",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
