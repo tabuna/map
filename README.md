@@ -33,7 +33,7 @@ If the source data is an array or a collection, you can call `collection()` befo
 
 ```php
 $data = [
-    ['code' => 'SVO', 'city' => 'Moscow'],
+    ['code' => 'LPK', 'city' => 'Lipetsk'],
     ['code' => 'JFK', 'city' => 'New York'],
 ];
 
