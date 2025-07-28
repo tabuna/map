@@ -23,7 +23,7 @@ class AirportController extends Controller
         return response()->json($airport);
     }
 }
-````
+```
 
 The `to()` method creates a new instance of the target class and populates it with mapped data.
 

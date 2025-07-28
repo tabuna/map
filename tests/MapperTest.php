@@ -10,6 +10,8 @@ use Orchestra\Testbench\TestCase;
 use Tabuna\Map\Mapper;
 use Tabuna\Map\Tests\Dummy\CustomMapperStub;
 use Tabuna\Map\Tests\Dummy\DummyAirport;
+use Tabuna\Map\Tests\Dummy\DummyAirportHook;
+use Tabuna\Map\Tests\Dummy\DummyAirportSetter;
 use Tabuna\Map\Tests\Dummy\DummyWithContainer;
 use Tabuna\Map\Tests\Dummy\EloquentAirportStub;
 
@@ -24,6 +26,21 @@ class MapperTest extends TestCase
         $this->assertInstanceOf(DummyAirport::class, $mapped);
         $this->assertSame('LPK', $mapped->code);
         $this->assertSame('Lipetsk', $mapped->city);
+    }
+
+    public function testItMapsArrayToObjectHookProperties(): void
+    {
+        $this->markTestSkippedUnless(
+            version_compare(PHP_VERSION, '8.4', '>'),
+            'PHP version >= 8.4 or higher is required.'
+        );
+
+        $data = ['code' => 'lpk', 'city' => 'Lipetsk'];
+
+        $mapped = Mapper::map($data)->to(DummyAirportHook::class);
+
+        $this->assertInstanceOf(DummyAirportHook::class, $mapped);
+        $this->assertSame('LPK', $mapped->code);
     }
 
     public function testItMapsArrayToObjectWithOutPartProperties(): void
