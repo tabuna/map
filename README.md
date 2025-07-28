@@ -1,11 +1,12 @@
 # Laravel Mapper
 
-A simple and elegant object mapper for Laravel. 
-Easily map arrays, requests, or collections to DTOs, Eloquent models, or custom objects.
+A simple and elegant object mapper for Laravel.
+It makes mapping arrays, requests, and collections into Eloquent models or any classes easy and convenient.
 
-## Usage
 
-### Map to a model or DTO
+### Mapping Data
+
+The core function is `map()`, which accepts source data and returns a mapper instance for further transformation.
 
 ```php
 use Illuminate\Http\Request;
@@ -24,7 +25,11 @@ class AirportController extends Controller
 }
 ````
 
-### Map a collection
+The `to()` method creates a new instance of the target class and populates it with mapped data.
+
+### Mapping Collections
+
+If the source data is an array or a collection, you can call `collection()` before `to()` to map each item individually:
 
 ```php
 $data = [
@@ -37,7 +42,13 @@ $airports = map($data)
     ->to(Airport::class);
 ```
 
-### With a custom mapper
+This returns an `Illuminate\Support\Collection` of objects.
+
+### Customizing Mapping
+
+By default, the Mapper will create objects even if some properties are missing. 
+This is useful for incremental object building.
+You can specify a custom mapper class or a closure to override default mapping behavior:
 
 ```php
 $airport = map($data)
@@ -56,7 +67,9 @@ $airport = map($data)
 ```
 
 
-### Serialize
+### Serializing to Array or JSON
+
+Any object created through the Mapper can be easily converted to an array or JSON:
 
 ```php
 $array = map($airport)->toArray();
